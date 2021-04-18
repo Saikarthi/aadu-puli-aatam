@@ -6,12 +6,15 @@ using UnityEngine;
 public class main_move : MonoBehaviour
 {
     [SerializeField]
-    private GameObject[] t, g;
-    int goatnum = 0,turn = 1;
+    private GameObject[] t, g,pos;
+    int goatcount = 0,turn = 1;
+    [SerializeField]
     int[] completelog = {1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-    int[] tigerpos = { 1, 4, 5 }, goatpos = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+    [SerializeField]
+    int[] tigerpos = { 0, 3, 4 }, goatpos = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 
     int tigernum, tigercupos,tiger_is_clicked=0;
+    int goatnum, goatcupos, goat_is_clicked = 0;
     //to move coin
     int[] zero = { 2, 3, 4, 5};
     int[] zero_next = {8, 9, 10, 11};
@@ -64,22 +67,16 @@ public class main_move : MonoBehaviour
     {
         
     }
-    public void move(int r)
-    {
-        switch (r)
-        {
-
-            default:
-                break;
-        }
-    }
+   
     // Update is called once per frame
     void Update()
     {
+
         //goat turn
         if (turn % 2 == 1)
         {
-            if (Input.GetMouseButtonDown(0))
+
+            if (Input.GetMouseButtonDown(0) && goatcount < 16)
             {
                 Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit h;
@@ -97,13 +94,55 @@ public class main_move : MonoBehaviour
                             float y = g[0].transform.position.y;
 
                             completelog[log] = 2;
-                            g[goatnum].transform.position = new Vector3(x, y, z);
-                            goatpos[goatnum] = log;
-                          
-                            goatnum += 1;
+                            g[goatcount].transform.position = new Vector3(x, y, z);
+                            goatpos[goatcount] = log;
+
+                            goatcount += 1;
                             turn += 1;
                         }
 
+                    }
+                }
+            }
+            else if(goatcount < 16)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit h;
+                    if (Physics.Raycast(r, out h))
+                    {
+
+                        if (h.transform.tag == "goat")
+                        {
+                            //find tiger number
+                            goatnum = Int16.Parse(h.transform.name);
+                            //find tiger cur pos
+                            goatcupos = tigerpos[goatnum];
+                            goat_is_clicked = 1;
+                            Debug.Log(goatnum);
+                        }
+                        if (goat_is_clicked == 1)
+                        {
+                            if (h.transform.tag == "obj")
+                            {
+                                int log = Int16.Parse(h.transform.name);
+                                if (completelog[log] == 0)
+                                {
+                                    float x = h.transform.position.x;
+                                    float z = h.transform.position.z;
+                                    //y no change because of 2d
+                                    float y = g[0].transform.position.y;
+
+                                    completelog[log] = 2;
+                                    t[tigernum].transform.position = new Vector3(x, y, z);
+                                    tiger_is_clicked = 0;
+                                    turn += 1;
+
+                                }
+
+                            }
+                        }
                     }
                 }
             }
@@ -125,7 +164,7 @@ public class main_move : MonoBehaviour
                         //find tiger cur pos
                         tigercupos = tigerpos[tigernum];
                         tiger_is_clicked = 1;
-                        Debug.Log(tigernum);
+                        Debug.Log(tigercupos);
                     }
                     if (tiger_is_clicked == 1)
                     {
@@ -137,8 +176,8 @@ public class main_move : MonoBehaviour
                                 float x = h.transform.position.x;
                                 float z = h.transform.position.z;
                                 float y = t[0].transform.position.y;
-
-                                completelog[log] = 2;
+                                completelog[tigercupos] = 0;
+                                completelog[log] = 1;
                                 t[tigernum].transform.position = new Vector3(x, y, z);
                                 tiger_is_clicked = 0;
                                 turn += 1;
@@ -149,6 +188,97 @@ public class main_move : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+    public void move(int r)
+    {
+        switch (r)
+        {
+            case 0:
+                for (int i = 0; i < zero.Length; i++)
+                {
+                    if (completelog[zero[i]] == 0)
+                    {
+                        pos[zero[i]].GetComponentInChildren<Renderer>().enabled = true;
+                    }
+                    else if (completelog[zero[i]] == 2)
+                    {
+                        pos[zero_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+
+                    }
+                }
+
+                break;
+            case 1:
+
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            case 5:
+
+                break;
+            case 6:
+
+                break;
+            case 7:
+
+                break;
+            case 8:
+
+                break;
+            case 9:
+
+                break;
+            case 10:
+
+                break;
+            case 11:
+
+                break;
+            case 12:
+
+                break;
+            case 13:
+
+                break;
+            case 14:
+
+                break;
+            case 15:
+
+                break;
+            case 16:
+
+                break;
+            case 17:
+
+                break;
+            case 18:
+
+                break;
+            case 19:
+
+                break;
+            case 20:
+
+                break;
+            case 21:
+
+                break;
+            case 22:
+
+                break;
+
+
+            default:
+                break;
         }
     }
 }

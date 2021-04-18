@@ -4202,6 +4202,33 @@ MonoBehaviour:
   - {fileID: 188034803}
   - {fileID: 1440463685}
   - {fileID: 2049794998}
+  pos:
+  - {fileID: 1824241711}
+  - {fileID: 1493158614}
+  - {fileID: 1274686650}
+  - {fileID: 1527530431}
+  - {fileID: 1213537129}
+  - {fileID: 422224936}
+  - {fileID: 420018420}
+  - {fileID: 1761646474}
+  - {fileID: 326525854}
+  - {fileID: 15790679}
+  - {fileID: 270471009}
+  - {fileID: 933635859}
+  - {fileID: 1859107934}
+  - {fileID: 1700657590}
+  - {fileID: 755690506}
+  - {fileID: 1612573364}
+  - {fileID: 313060640}
+  - {fileID: 10272610}
+  - {fileID: 304557056}
+  - {fileID: 1669324633}
+  - {fileID: 684851954}
+  - {fileID: 235857807}
+  - {fileID: 1378915314}
+  completelog: 0100000000000000000000000100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  tigerpos: 010000000400000005000000
+  goatpos: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 --- !u!4 &1452933912
 Transform:
   m_ObjectHideFlags: 0
