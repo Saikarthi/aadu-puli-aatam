@@ -125,11 +125,12 @@ public class main_move : MonoBehaviour
                     {
                         if (h.transform.tag == "goat")
                         {
-
+                            disable_colider_all();
+                            disable_highlight();
                             //find goat number
                             goatnum = Int16.Parse(h.transform.name);
                             goatcupos = goatpos[goatnum];
-                            move(goatcupos);
+                            move(goatcupos,2);
                             goat_is_clicked = 1;
 
                         }
@@ -174,11 +175,14 @@ public class main_move : MonoBehaviour
                     
                     if(h.transform.tag =="tiger")
                     {
+                        disable_colider_all();
+                        disable_highlight();
+
                         //find tiger number
                         tigernum = Int16.Parse(h.transform.name);
                         //find tiger cur pos
                         tigercupos = tigerpos[tigernum];
-                        move(tigercupos);
+                        move(tigercupos,1);
                         tiger_is_clicked = 1;
                      
                     }
@@ -189,7 +193,6 @@ public class main_move : MonoBehaviour
                             int log = Int16.Parse(h.transform.name);
                             if (completelog[log] == 0)
                             {
-                               
                                 float x = h.transform.position.x;
                                 float z = h.transform.position.z;
                                 float y = t[0].transform.position.y;
@@ -200,6 +203,8 @@ public class main_move : MonoBehaviour
                                 tiger_is_clicked = 0;
                                 turn += 1;
                                 disable_colider_all();
+                                disable_highlight();
+
                             }
 
                         }
@@ -257,7 +262,7 @@ public class main_move : MonoBehaviour
             }
         }
     }
-    public void move(int current)
+    public void move(int current, int what)
     {
         switch (current)
         {
@@ -269,11 +274,13 @@ public class main_move : MonoBehaviour
                         pos[zero[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(zero[i]);
                     }
-                    else if (completelog[zero[i]] == 2)
+                    else if (what==1)
                     {
-                        pos[zero_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(zero_next[i]);
-
+                        if (completelog[zero[i]] == 2 && zero_next[i] != -1)
+                        {
+                            pos[zero_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(zero_next[i]);
+                        }
                     }
                 }
 
@@ -286,12 +293,16 @@ public class main_move : MonoBehaviour
                         pos[one[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(one[i]);
                     }
-                    else if (completelog[one[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[one_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(one_next[i]);
+                        if (completelog[one[i]] == 2 && one_next[i] != -1)
+                        {
+                            pos[one_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(one_next[i]);
 
+                        }
                     }
+                    
                 }
                 break;
             case 2:
@@ -302,12 +313,16 @@ public class main_move : MonoBehaviour
                         pos[two[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(two[i]);
                     }
-                    else if (completelog[two[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[two_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(two_next[i]);
+                        if (completelog[two[i]] == 2 && two_next[i] != -1)
+                        {
+                            pos[two_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(two_next[i]);
 
+                        }
                     }
+                  
                 }
                 break;
             case 3:
@@ -318,12 +333,15 @@ public class main_move : MonoBehaviour
                         pos[three[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(three[i]);
                     }
-                    else if (completelog[three[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[three_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(three_next[i]);
-
+                        if (completelog[three[i]] == 2 && three_next[i] != -1)
+                        {
+                            pos[three_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(three_next[i]);
+                        }
                     }
+                   
                 }
                 break;
             case 4:
@@ -334,12 +352,15 @@ public class main_move : MonoBehaviour
                         pos[four[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(four[i]);
                     }
-                    else if (completelog[four[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[four_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(four_next[i]);
-
+                    if(completelog[four[i]] == 2 && four_next[i] != -1)
+                    {
+                            pos[four_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(four_next[i]);
+                        }
                     }
+                    
                 }
                 break;
             case 5:
@@ -350,12 +371,16 @@ public class main_move : MonoBehaviour
                         pos[five[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(five[i]);
                     }
-                    else if (completelog[five[i]] == 2 && five_next[i]!=-1)
+                    else if (what == 1)
                     {
-                        pos[five_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(five_next[i]);
+                        if (completelog[five[i]] == 2 && five_next[i] != -1)
+                        {
+                            pos[five_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(five_next[i]);
 
+                        }
                     }
+                   
                 }
                 break;
             case 6:
@@ -366,11 +391,14 @@ public class main_move : MonoBehaviour
                         pos[six[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(six[i]);
                     }
-                    else if (completelog[six[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[six_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(six_next[i]);
+                        if (completelog[six[i]] == 2 && six_next[i] != -1)
+                        {
+                            pos[six_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(six_next[i]);
 
+                        }
                     }
                 }
                 break;
@@ -382,11 +410,14 @@ public class main_move : MonoBehaviour
                         pos[seven[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(seven[i]);
                     }
-                    else if (completelog[seven[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[seven_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(seven_next[i]);
+                        if (completelog[seven[i]] == 2 && seven_next[i] != -1)
+                        {
+                            pos[seven_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(seven_next[i]);
 
+                        }
                     }
                 }
                 break;
@@ -398,11 +429,14 @@ public class main_move : MonoBehaviour
                         pos[eight[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(eight[i]);
                     }
-                    else if (completelog[eight[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[eight_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(eight_next[i]);
+                        if (completelog[eight[i]] == 2 && eight_next[i] != -1)
+                        {
+                            pos[eight_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(eight_next[i]);
 
+                        }
                     }
                 }
                 break;
@@ -414,12 +448,16 @@ public class main_move : MonoBehaviour
                         pos[nine[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(nine[i]);
                     }
-                    else if (completelog[nine[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[nine_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(nine_next[i]);
+                        if (completelog[nine[i]] == 2 && nine_next[i] != -1)
+                        {
+                            pos[nine_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(nine_next[i]);
 
+                        }
                     }
+                  
                 }
                 break;
             case 10:
@@ -430,11 +468,14 @@ public class main_move : MonoBehaviour
                         pos[ten[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(ten[i]);
                     }
-                    else if (completelog[ten[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[ten_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(ten_next[i]);
+                        if (completelog[ten[i]] == 2 && ten_next[i] != -1)
+                        {
+                            pos[ten_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(ten_next[i]);
 
+                        }
                     }
                 }
                 break;
@@ -446,11 +487,14 @@ public class main_move : MonoBehaviour
                         pos[Eleven[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(Eleven[i]);
                     }
-                    else if (completelog[Eleven[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[Eleven_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(Eleven_next[i]);
+                        if (completelog[Eleven[i]] == 2 && Eleven_next[i] != -1)
+                        {
+                            pos[Eleven_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(Eleven_next[i]);
 
+                        }
                     }
                 }
                 break;
@@ -462,11 +506,14 @@ public class main_move : MonoBehaviour
                         pos[Twelve[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(Twelve[i]);
                     }
-                    else if (completelog[Twelve[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[Twelve_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(Twelve_next[i]);
+                        if (completelog[Twelve[i]] == 2 && Twelve_next[i] != -1)
+                        {
+                            pos[Twelve_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(Twelve_next[i]);
 
+                        }
                     }
                 }
                 break;
@@ -478,12 +525,16 @@ public class main_move : MonoBehaviour
                         pos[Thirteen[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(Thirteen[i]);
                     }
-                    else if (completelog[Thirteen[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[Thirteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(Thirteen_next[i]);
+                        if (completelog[Thirteen[i]] == 2 && Thirteen_next[i] != -1)
+                        {
+                            pos[Thirteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(Thirteen_next[i]);
 
+                        }
                     }
+                    
                 }
                 break;
             case 14:
@@ -494,11 +545,14 @@ public class main_move : MonoBehaviour
                         pos[Fourteen[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(Fourteen[i]);
                     }
-                    else if (completelog[Fourteen[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[Fourteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(Fourteen_next[i]);
+                        if (completelog[Fourteen[i]] == 2 && Fourteen_next[i] != -1)
+                        {
+                            pos[Fourteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(Fourteen_next[i]);
 
+                        }
                     }
                 }
                 break;
@@ -510,12 +564,16 @@ public class main_move : MonoBehaviour
                         pos[Fifteen[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(Fifteen[i]);
                     }
-                    else if (completelog[Fifteen[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[Fifteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(Fifteen_next[i]);
+                        if (completelog[Fifteen[i]] == 2 && Fifteen_next[i] != -1)
+                        {
+                            pos[Fifteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(Fifteen_next[i]);
 
+                        }
                     }
+                    
                 }
                 break;
             case 16:
@@ -526,12 +584,16 @@ public class main_move : MonoBehaviour
                         pos[Sixteen[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(Sixteen[i]);
                     }
-                    else if (completelog[Sixteen[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[Sixteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(Sixteen_next[i]);
+                        if (completelog[Sixteen[i]] == 2 && Sixteen_next[i] != -1)
+                        {
+                            pos[Sixteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(Sixteen_next[i]);
 
+                        }
                     }
+                    
                 }
                 break;
             case 17:
@@ -542,11 +604,14 @@ public class main_move : MonoBehaviour
                         pos[Seventeen[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(Seventeen[i]);
                     }
-                    else if (completelog[Seventeen[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[Seventeen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(Seventeen_next[i]);
+                        if (completelog[Seventeen[i]] == 2 && Seventeen_next[i] != -1)
+                        {
+                            pos[Seventeen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(Seventeen_next[i]);
 
+                        }
                     }
                 }
                 break;
@@ -558,11 +623,14 @@ public class main_move : MonoBehaviour
                         pos[Eighteen[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(Eighteen[i]);
                     }
-                    else if (completelog[Eighteen[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[Eighteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(Eighteen_next[i]);
+                        if (completelog[Eighteen[i]] == 2 && Eighteen_next[i] != -1)
+                        {
+                            pos[Eighteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(Eighteen_next[i]);
 
+                        }
                     }
                 }
                 break;
@@ -574,11 +642,14 @@ public class main_move : MonoBehaviour
                         pos[Nineteen[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(Nineteen[i]);
                     }
-                    else if (completelog[Nineteen[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[Nineteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(Nineteen_next[i]);
+                        if (completelog[Nineteen[i]] == 2 && Nineteen_next[i] != -1)
+                        {
+                            pos[Nineteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(Nineteen_next[i]);
 
+                        }
                     }
                 }
                 break;
@@ -590,11 +661,14 @@ public class main_move : MonoBehaviour
                         pos[Twenty[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(Twenty[i]);
                     }
-                    else if (completelog[Twenty[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[Twenty_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(Twenty_next[i]);
+                        if (completelog[Twenty[i]] == 2 && Twenty_next[i] != -1)
+                        {
+                            pos[Twenty_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(Twenty_next[i]);
 
+                        }
                     }
                 }
                 break;
@@ -606,11 +680,14 @@ public class main_move : MonoBehaviour
                         pos[Twenty_one[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(Twenty_one[i]);
                     }
-                    else if (completelog[Twenty_one[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[Twenty_one_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(Twenty_one_next[i]);
+                        if (completelog[Twenty_one[i]] == 2 && Twenty_one_next[i] != -1)
+                        {
+                            pos[Twenty_one_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(Twenty_one_next[i]);
 
+                        }
                     }
                 }
                 break;
@@ -622,11 +699,14 @@ public class main_move : MonoBehaviour
                         pos[Twenty_two[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(Twenty_two[i]);
                     }
-                    else if (completelog[Twenty_two[i]] == 2)
+                    else if (what == 1)
                     {
-                        pos[Twenty_two_next[i]].GetComponentInChildren<Renderer>().enabled = true;
-                        Enable_colider(Twenty_two_next[i]);
+                        if (completelog[Twenty_two[i]] == 2 && Twenty_two_next[i] != -1)
+                        {
+                            pos[Twenty_two_next[i]].GetComponentInChildren<Renderer>().enabled = true;
+                            Enable_colider(Twenty_two_next[i]);
 
+                        }
                     }
                 }
                 break;
