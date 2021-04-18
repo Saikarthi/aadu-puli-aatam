@@ -7,7 +7,7 @@ public class main_move : MonoBehaviour
 {
     [SerializeField]
     private GameObject[] t, g,pos;
-    int goatcount = 15,turn = 1;
+    int goatcount = 0,turn = 1;
     [SerializeField]
     int[] completelog = {1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     [SerializeField]
@@ -30,7 +30,7 @@ public class main_move : MonoBehaviour
     int[] five_next = {-1,3,-1,17};
     int[] six = {5,12};
     int[] six_next = { 4, 18 };
-    int[] seven = { 1, 8, 1};
+    int[] seven = { 1, 8, 13};
     int[] seven_next = { -1, 9, -1 };
     int[] eight = { 2, 7, 9,14 };
     int[] eight_next = { 0,-1,10,19 };
@@ -90,7 +90,6 @@ public class main_move : MonoBehaviour
                 RaycastHit h;
                 if (Physics.Raycast(r, out h))
                 {
-                    Debug.Log(h.transform.name);
 
                     if (h.transform.tag == "obj")
                     {
@@ -114,43 +113,46 @@ public class main_move : MonoBehaviour
                     }
                 }
             }//after placeing goat: goat turn
-            else if(goatcount >= 15)
+            else if(goatcount >= 15 )
             {
+
+              
                 if (Input.GetMouseButtonDown(0))
                 {
                     Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
                     RaycastHit h;
                     if (Physics.Raycast(r, out h))
                     {
-
                         if (h.transform.tag == "goat")
                         {
-                            //find tiger number
-                            goatnum = Int16.Parse(h.transform.name);
 
+                            //find goat number
+                            goatnum = Int16.Parse(h.transform.name);
                             goatcupos = goatpos[goatnum];
+                            move(goatcupos);
                             goat_is_clicked = 1;
-                            Debug.Log(goatnum);
-                            Debug.Log(goatpos);
-                            Debug.Log(goatcupos);
+
                         }
                         if (goat_is_clicked == 1)
                         {
                             if (h.transform.tag == "obj")
                             {
+
                                 int log = Int16.Parse(h.transform.name);
                                 if (completelog[log] == 0)
                                 {
                                     float x = h.transform.position.x;
                                     float z = h.transform.position.z;
                                     //y no change because of 2d
-                                    float y = g[0].transform.position.y;
+                                    float y = t[0].transform.position.y;
+                                    goatpos[goatnum] = log;
                                     completelog[goatcupos] = 0;
-
                                     completelog[log] = 2;
-                                    t[tigernum].transform.position = new Vector3(x, y, z);
-                                    tiger_is_clicked = 0;
+                                    g[goatnum].transform.position = new Vector3(x, y, z);
+                                    goat_is_clicked= 0;
                                     turn += 1;
+                                    disable_colider_all();
+                                    disable_highlight();
 
                                 }
 
@@ -175,10 +177,7 @@ public class main_move : MonoBehaviour
                         //find tiger number
                         tigernum = Int16.Parse(h.transform.name);
                         //find tiger cur pos
-
-                     
                         tigercupos = tigerpos[tigernum];
-
                         move(tigercupos);
                         tiger_is_clicked = 1;
                      
@@ -190,6 +189,7 @@ public class main_move : MonoBehaviour
                             int log = Int16.Parse(h.transform.name);
                             if (completelog[log] == 0)
                             {
+                               
                                 float x = h.transform.position.x;
                                 float z = h.transform.position.z;
                                 float y = t[0].transform.position.y;
@@ -350,7 +350,7 @@ public class main_move : MonoBehaviour
                         pos[five[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(five[i]);
                     }
-                    else if (completelog[five[i]] == 2)
+                    else if (completelog[five[i]] == 2 && five_next[i]!=-1)
                     {
                         pos[five_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                         Enable_colider(five_next[i]);
