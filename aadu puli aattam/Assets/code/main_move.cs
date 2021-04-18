@@ -12,6 +12,11 @@ public class main_move : MonoBehaviour
     int[] completelog = {1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     [SerializeField]
     int[] tigerpos = { 0, 3, 4 }, goatpos = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+    //goat die
+    bool jump = false;
+    int delete = -5;
+    int goat_die = 5;
+
 
     int tigernum, tigercupos,tiger_is_clicked=0;
     int goatnum, goatcupos, goat_is_clicked = 0;
@@ -77,11 +82,19 @@ public class main_move : MonoBehaviour
         //goat turn
         if (turn % 2 == 1)
         {
+            //to highlight free postion at start
             if (goatcount < 15)
             {
                 Enable_colider_all();
 
                 Enable_highlight();
+            }
+            //to check goat get out
+            if(goat_die==0)
+            {
+                //goat win
+                Debug.Log("goat all died");
+
             }
             if (Input.GetMouseButtonDown(0) && goatcount < 15)
             {
@@ -90,7 +103,7 @@ public class main_move : MonoBehaviour
                 RaycastHit h;
                 if (Physics.Raycast(r, out h))
                 {
-
+                    
                     if (h.transform.tag == "obj")
                     {
                         int log = Int16.Parse(h.transform.name);
@@ -119,6 +132,7 @@ public class main_move : MonoBehaviour
               
                 if (Input.GetMouseButtonDown(0))
                 {
+                    Debug.Log(goat_die);
                     Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
                     RaycastHit h;
                     if (Physics.Raycast(r, out h))
@@ -200,6 +214,23 @@ public class main_move : MonoBehaviour
                                 completelog[tigercupos] = 0;
                                 completelog[log] = 1;
                                 t[tigernum].transform.position = new Vector3(x, y, z);
+                                //for knokout goat
+                                if(jump== true)
+                                {
+                                    for(int i=0;i<goatpos.Length;i++)
+                                    {
+                                        if(goatpos[i]==delete)
+                                        {
+                                            Debug.Log(delete);
+                                            g[i].SetActive(false);
+                                            completelog[goatpos[i]] = 0;
+                                            goatpos[i] = -1;
+                                            goat_die -= 1;
+                                            jump = false;
+                                            delete = -5;
+                                        }
+                                    }
+                                }
                                 tiger_is_clicked = 0;
                                 turn += 1;
                                 disable_colider_all();
@@ -280,6 +311,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[zero_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(zero_next[i]);
+                            jump = true;
+                            delete = zero[i];
                         }
                     }
                 }
@@ -299,6 +332,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[one_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(one_next[i]);
+                            jump = true;
+                            delete = one[i];
 
                         }
                     }
@@ -319,6 +354,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[two_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(two_next[i]);
+                            jump = true;
+                            delete = two[i];
 
                         }
                     }
@@ -339,6 +376,9 @@ public class main_move : MonoBehaviour
                         {
                             pos[three_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(three_next[i]);
+                            jump = true;
+                            delete = three[i];
+
                         }
                     }
                    
@@ -358,6 +398,8 @@ public class main_move : MonoBehaviour
                     {
                             pos[four_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(four_next[i]);
+                            jump = true;
+                            delete = four[i];
                         }
                     }
                     
@@ -377,6 +419,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[five_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(five_next[i]);
+                            jump = true;
+                            delete = five[i];
 
                         }
                     }
@@ -397,7 +441,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[six_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(six_next[i]);
-
+                            jump = true;
+                            delete = six[i];
                         }
                     }
                 }
@@ -416,6 +461,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[seven_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(seven_next[i]);
+                            jump = true;
+                            delete = seven[i];
 
                         }
                     }
@@ -435,6 +482,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[eight_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(eight_next[i]);
+                            jump = true;
+                            delete = eight[i];
 
                         }
                     }
@@ -454,6 +503,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[nine_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(nine_next[i]);
+                            jump = true;
+                            delete = nine[i];
 
                         }
                     }
@@ -474,6 +525,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[ten_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(ten_next[i]);
+                            jump = true;
+                            delete = ten[i];
 
                         }
                     }
@@ -493,6 +546,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[Eleven_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Eleven_next[i]);
+                            jump = true;
+                            delete = Eleven[i];
 
                         }
                     }
@@ -512,6 +567,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[Twelve_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Twelve_next[i]);
+                            jump = true;
+                            delete = Twelve[i];
 
                         }
                     }
@@ -531,6 +588,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[Thirteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Thirteen_next[i]);
+                            jump = true;
+                            delete = Thirteen[i];
 
                         }
                     }
@@ -551,6 +610,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[Fourteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Fourteen_next[i]);
+                            jump = true;
+                            delete = Fourteen[i];
 
                         }
                     }
@@ -570,6 +631,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[Fifteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Fifteen_next[i]);
+                            jump = true;
+                            delete = Fifteen[i];
 
                         }
                     }
@@ -590,6 +653,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[Sixteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Sixteen_next[i]);
+                            jump = true;
+                            delete = Sixteen[i];
 
                         }
                     }
@@ -610,6 +675,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[Seventeen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Seventeen_next[i]);
+                            jump = true;
+                            delete = Seventeen[i];
 
                         }
                     }
@@ -629,6 +696,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[Eighteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Eighteen_next[i]);
+                            jump = true;
+                            delete = Eighteen[i];
 
                         }
                     }
@@ -648,6 +717,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[Nineteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Nineteen_next[i]);
+                            jump = true;
+                            delete = Nineteen[i];
 
                         }
                     }
@@ -667,6 +738,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[Twenty_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Twenty_next[i]);
+                            jump = true;
+                            delete = Twenty[i];
 
                         }
                     }
@@ -686,6 +759,8 @@ public class main_move : MonoBehaviour
                         {
                             pos[Twenty_one_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Twenty_one_next[i]);
+                            jump = true;
+                            delete = Twenty_one[i];
 
                         }
                     }
@@ -705,11 +780,21 @@ public class main_move : MonoBehaviour
                         {
                             pos[Twenty_two_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Twenty_two_next[i]);
+                            jump = true;
+                            delete = Twenty_two[i];
 
                         }
                     }
                 }
                 break;
+        }
+    }
+    public void check_pulli_can_move()
+    {
+        for(int i =0 ; i<t.Length;i++ )
+        {
+            int test = tigerpos[i];
+
         }
     }
 }
