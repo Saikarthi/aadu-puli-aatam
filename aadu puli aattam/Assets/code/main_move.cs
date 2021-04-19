@@ -2,20 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class main_move : MonoBehaviour
 {
     [SerializeField]
     private GameObject[] t, g,pos;
     int goatcount = 0,turn = 1;
-    [SerializeField]
+
     int[] completelog = {1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-    [SerializeField]
+
     int[] tigerpos = { 0, 3, 4 }, goatpos = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
     //goat die
     bool jump = false;
     int delete = -5;
     int goat_die = 5;
+    int where_goat_goes;
 
 
     int tigernum, tigercupos,tiger_is_clicked=0;
@@ -67,18 +69,18 @@ public class main_move : MonoBehaviour
     int[] Twenty_one_next = { 10,19,-1};
     int[] Twenty_two = { 17,21};
     int[] Twenty_two_next = {11,20};
+    //win t and g
+    [SerializeField]
+    GameObject t_win, g_win;
+    [SerializeField]
+    TextMeshProUGUI text;
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-   
-    // Update is called once per frame
+    //AUDIO
+    [SerializeField]
+    AudioSource coin, kill;
     void Update()
     {
-
+        text.SetText(goat_die.ToString());
         //goat turn
         if (turn % 2 == 1)
         {
@@ -94,6 +96,7 @@ public class main_move : MonoBehaviour
             {
                 //goat win
                 Debug.Log("goat all died");
+                t_win.SetActive(true);
 
             }
             if (Input.GetMouseButtonDown(0) && goatcount < 15)
@@ -112,11 +115,11 @@ public class main_move : MonoBehaviour
                             float x = h.transform.position.x;
                             float z = h.transform.position.z;
                             float y = g[0].transform.position.y;
-
+                            coin.Play();
                             completelog[log] = 2;
                             g[goatcount].transform.position = new Vector3(x, y, z);
                             goatpos[goatcount] = log;
-
+                            check_pulli_can_move();
                             goatcount += 1;
                             disable_colider_all();
                             disable_highlight();
@@ -165,7 +168,9 @@ public class main_move : MonoBehaviour
                                     completelog[log] = 2;
                                     g[goatnum].transform.position = new Vector3(x, y, z);
                                     goat_is_clicked= 0;
+                                    check_pulli_can_move();
                                     turn += 1;
+                                    coin.Play();
                                     disable_colider_all();
                                     disable_highlight();
 
@@ -207,6 +212,7 @@ public class main_move : MonoBehaviour
                             int log = Int16.Parse(h.transform.name);
                             if (completelog[log] == 0)
                             {
+                                coin.Play();
                                 float x = h.transform.position.x;
                                 float z = h.transform.position.z;
                                 float y = t[0].transform.position.y;
@@ -215,12 +221,13 @@ public class main_move : MonoBehaviour
                                 completelog[log] = 1;
                                 t[tigernum].transform.position = new Vector3(x, y, z);
                                 //for knokout goat
-                                if(jump== true)
+                                if(jump== true && where_goat_goes== log)
                                 {
                                     for(int i=0;i<goatpos.Length;i++)
                                     {
                                         if(goatpos[i]==delete)
                                         {
+                                            kill.Play();
                                             Debug.Log(delete);
                                             g[i].SetActive(false);
                                             completelog[goatpos[i]] = 0;
@@ -228,8 +235,12 @@ public class main_move : MonoBehaviour
                                             goat_die -= 1;
                                             jump = false;
                                             delete = -5;
+                                            disable_colider_all();
+                                            disable_highlight();
+
                                         }
                                     }
+                                    where_goat_goes = -6;
                                 }
                                 tiger_is_clicked = 0;
                                 turn += 1;
@@ -311,6 +322,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[zero_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(zero_next[i]);
+                            where_goat_goes = zero_next[i];
                             jump = true;
                             delete = zero[i];
                         }
@@ -332,6 +344,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[one_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(one_next[i]);
+                            where_goat_goes = one_next[i];
                             jump = true;
                             delete = one[i];
 
@@ -354,6 +367,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[two_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(two_next[i]);
+                            where_goat_goes =two_next[i];
                             jump = true;
                             delete = two[i];
 
@@ -376,6 +390,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[three_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(three_next[i]);
+                            where_goat_goes =three_next[i];
                             jump = true;
                             delete = three[i];
 
@@ -398,6 +413,7 @@ public class main_move : MonoBehaviour
                     {
                             pos[four_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(four_next[i]);
+                            where_goat_goes =four_next[i];
                             jump = true;
                             delete = four[i];
                         }
@@ -419,6 +435,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[five_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(five_next[i]);
+                            where_goat_goes = five_next[i];
                             jump = true;
                             delete = five[i];
 
@@ -441,6 +458,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[six_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(six_next[i]);
+                            where_goat_goes = six_next[i];
                             jump = true;
                             delete = six[i];
                         }
@@ -461,6 +479,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[seven_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(seven_next[i]);
+                            where_goat_goes = seven_next[i];
                             jump = true;
                             delete = seven[i];
 
@@ -482,6 +501,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[eight_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(eight_next[i]);
+                            where_goat_goes = eight_next[i];
                             jump = true;
                             delete = eight[i];
 
@@ -503,6 +523,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[nine_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(nine_next[i]);
+                            where_goat_goes = nine_next[i];
                             jump = true;
                             delete = nine[i];
 
@@ -525,6 +546,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[ten_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(ten_next[i]);
+                            where_goat_goes = ten_next[i];
                             jump = true;
                             delete = ten[i];
 
@@ -546,6 +568,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[Eleven_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Eleven_next[i]);
+                            where_goat_goes = Eleven_next[i];
                             jump = true;
                             delete = Eleven[i];
 
@@ -567,6 +590,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[Twelve_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Twelve_next[i]);
+                            where_goat_goes = Twelve_next[i];
                             jump = true;
                             delete = Twelve[i];
 
@@ -588,6 +612,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[Thirteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Thirteen_next[i]);
+                            where_goat_goes = Thirteen_next[i];
                             jump = true;
                             delete = Thirteen[i];
 
@@ -610,6 +635,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[Fourteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Fourteen_next[i]);
+                            where_goat_goes = Fourteen_next[i];
                             jump = true;
                             delete = Fourteen[i];
 
@@ -631,6 +657,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[Fifteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Fifteen_next[i]);
+                            where_goat_goes = Fifteen_next[i];
                             jump = true;
                             delete = Fifteen[i];
 
@@ -653,6 +680,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[Sixteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Sixteen_next[i]);
+                            where_goat_goes = Sixteen_next[i];
                             jump = true;
                             delete = Sixteen[i];
 
@@ -675,6 +703,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[Seventeen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Seventeen_next[i]);
+                            where_goat_goes = Sixteen_next[i];
                             jump = true;
                             delete = Seventeen[i];
 
@@ -696,6 +725,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[Eighteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Eighteen_next[i]);
+                            where_goat_goes = Eighteen_next[i];
                             jump = true;
                             delete = Eighteen[i];
 
@@ -717,6 +747,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[Nineteen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Nineteen_next[i]);
+                            where_goat_goes = Nineteen_next[i];
                             jump = true;
                             delete = Nineteen[i];
 
@@ -738,6 +769,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[Twenty_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Twenty_next[i]);
+                            where_goat_goes = Twenty_next[i];
                             jump = true;
                             delete = Twenty[i];
 
@@ -759,6 +791,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[Twenty_one_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Twenty_one_next[i]);
+                            where_goat_goes = Twenty_one_next[i];
                             jump = true;
                             delete = Twenty_one[i];
 
@@ -780,6 +813,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[Twenty_two_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Twenty_two_next[i]);
+                            where_goat_goes = Twenty_two_next[i];
                             jump = true;
                             delete = Twenty_two[i];
 
@@ -791,10 +825,541 @@ public class main_move : MonoBehaviour
     }
     public void check_pulli_can_move()
     {
-        for(int i =0 ; i<t.Length;i++ )
+        bool[] a= {false, false,false };
+        for (int i =0 ; i<t.Length;i++ )
         {
-            int test = tigerpos[i];
+            
+            a[i] = check(tigerpos[i]);
+        }
+
+        if(a[0]==true && a[1] == true && a[2] == true )
+        {
+            //tiger locked
+            Debug.Log("locked");
+            g_win.SetActive(true);
 
         }
+
     }
+    public bool check(int current)
+    {
+        int done = 0;
+        switch (current)
+        {
+            
+            case 0:
+                for (int i = 0; i < zero.Length; i++)
+                {
+                    
+                    if (completelog[zero[i]] == 1 || completelog[zero[i]] == 2)
+                    {
+                        if (completelog[zero_next[i]] == 1 || completelog[zero_next[i]] == 2)
+                        {
+                            
+                            done += 1;
+                        }
+                    }
+
+
+                    if(done==zero.Length)
+                    {
+                        done = 0;
+                        return true;
+
+                    }
+                }
+
+                break;
+            case 1:
+                for (int i = 0; i < one.Length; i++)
+                {
+
+                    if (completelog[one[i]] == 1 || completelog[one[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[one[i]] == 2 && (completelog[one_next[i]] == 1 && completelog[one_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == one.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+            case 2:
+                for (int i = 0; i < two.Length; i++)
+                {
+
+                    if (completelog[two[i]] == 1 || completelog[two[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[two[i]] == 2 && (completelog[two_next[i]] == 1 && completelog[two_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == two.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                
+                break;
+            case 3:
+                for (int i = 0; i < three.Length; i++)
+                {
+
+                    if (completelog[three[i]] == 1 || completelog[three[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[three[i]] == 2 && (completelog[three_next[i]] == 1 && completelog[three_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == three.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                
+                break;
+            case 4:
+                for (int i = 0; i < four.Length; i++)
+                {
+
+                    if (completelog[four[i]] == 1 || completelog[four[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[four[i]] == 2 && (completelog[four_next[i]] == 1 && completelog[four_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == four.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+              
+                break;
+            case 5:
+                for (int i = 0; i < five.Length; i++)
+                {
+
+                    if (completelog[five[i]] == 1 || completelog[five[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[five[i]] == 2 && (completelog[five_next[i]] == 1 && completelog[five_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == five.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+            case 6:
+                for (int i = 0; i < six.Length; i++)
+                {
+
+                    if (completelog[six[i]] == 1 || completelog[six[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[six[i]] == 2 && (completelog[six_next[i]] == 1 && completelog[six_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == six.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+
+            case 7:
+                for (int i = 0; i < seven.Length; i++)
+                {
+
+                    if (completelog[seven[i]] == 1 || completelog[seven[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[seven[i]] == 2 && (completelog[seven_next[i]] == 1 && completelog[seven_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == seven.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+              
+            case 8:
+                for (int i = 0; i < eight.Length; i++)
+                {
+
+                    if (completelog[eight[i]] == 1 || completelog[eight[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[eight[i]] == 2 && (completelog[eight_next[i]] == 1 && completelog[eight_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == eight.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+            case 9:
+                for (int i = 0; i < nine.Length; i++)
+                {
+
+                    if (completelog[nine[i]] == 1 || completelog[nine[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[nine[i]] == 2 && (completelog[nine_next[i]] == 1 && completelog[nine_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == nine.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+            case 10:
+                for (int i = 0; i < ten.Length; i++)
+                {
+
+                    if (completelog[ten[i]] == 1 || completelog[ten[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[ten[i]] == 2 && (completelog[ten_next[i]] == 1 && completelog[ten_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == ten.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+            case 11:
+                for (int i = 0; i < Eleven.Length; i++)
+                {
+
+                    if (completelog[Eleven[i]] == 1 || completelog[Eleven[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[Eleven[i]] == 2 && (completelog[Eleven_next[i]] == 1 && completelog[Eleven_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == Eleven.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+            case 12:
+                for (int i = 0; i < Twelve.Length; i++)
+                {
+
+                    if (completelog[Twelve[i]] == 1 || completelog[Twelve[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[Twelve[i]] == 2 && (completelog[Twelve_next[i]] == 1 && completelog[Twelve_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == Twelve.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+            case 13:
+                for (int i = 0; i < Thirteen.Length; i++)
+                {
+
+                    if (completelog[Thirteen[i]] == 1 || completelog[Thirteen[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[Thirteen[i]] == 2 && (completelog[Thirteen_next[i]] == 1 && completelog[Thirteen_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == Thirteen.Length)
+                    {
+                        return true;
+                    }
+                }
+                break;
+            case 14:
+                for (int i = 0; i < Fourteen.Length; i++)
+                {
+
+                    if (completelog[Fourteen[i]] == 1 || completelog[Fourteen[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[Fourteen[i]] == 2 && (completelog[Fourteen_next[i]] == 1 && completelog[Fourteen_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == Fourteen.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+            case 15:
+                for (int i = 0; i < Fifteen.Length; i++)
+                {
+
+                    if (completelog[Fifteen[i]] == 1 || completelog[Fifteen[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[Fifteen[i]] == 2 && (completelog[Fifteen_next[i]] == 1 && completelog[Fifteen_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == Fifteen.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+            case 16:
+                for (int i = 0; i < Sixteen.Length; i++)
+                {
+
+                    if (completelog[Sixteen[i]] == 1 || completelog[Sixteen[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[Sixteen[i]] == 2 && (completelog[Sixteen_next[i]] == 1 && completelog[Sixteen_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == Sixteen.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+            case 17:
+                for (int i = 0; i < Seventeen.Length; i++)
+                {
+
+                    if (completelog[Seventeen[i]] == 1 || completelog[Seventeen[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[Seventeen[i]] == 2 && (completelog[Seventeen_next[i]] == 1 && completelog[Seventeen_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == Seventeen.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+            case 18:
+                for (int i = 0; i < Eighteen.Length; i++)
+                {
+
+                    if (completelog[Eighteen[i]] == 1 || completelog[Eighteen[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[Eighteen[i]] == 2 && (completelog[Eighteen_next[i]] == 1 && completelog[Eighteen_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == Eighteen.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+            case 19:
+                for (int i = 0; i < Nineteen.Length; i++)
+                {
+
+                    if (completelog[Nineteen[i]] == 1 || completelog[Nineteen[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[Nineteen[i]] == 2 && (completelog[Nineteen_next[i]] == 1 && completelog[Nineteen_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == Nineteen.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+            case 20:
+                for (int i = 0; i < Twenty.Length; i++)
+                {
+
+                    if (completelog[Twenty[i]] == 1 || completelog[Twenty[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[Twenty[i]] == 2 && (completelog[Twenty_next[i]] == 1 && completelog[Twenty_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == Twenty.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+            case 21:
+                for (int i = 0; i < Twenty_one.Length; i++)
+                {
+
+                    if (completelog[Twenty_one[i]] == 1 || completelog[Twenty_one[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[Twenty_one[i]] == 2 && (completelog[Twenty_one_next[i]] == 1 && completelog[Twenty_one_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == Twenty_one.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+            case 22:
+                for (int i = 0; i < Twenty_two.Length; i++)
+                {
+
+                    if (completelog[Twenty_two[i]] == 1 || completelog[Twenty_two[i]] == 2)
+                    {
+                        done += 1;
+                    }
+                    else
+                    {
+                        if (completelog[Twenty_two[i]] == 2 && (completelog[Twenty_two_next[i]] == 1 && completelog[Twenty_two_next[i]] == 2))
+                        {
+                            done += 1;
+                        }
+                    }
+                    if (done == Twenty_two.Length)
+                    {
+                        Debug.Log(done);
+                        return true;
+                    }
+                }
+                break;
+        }
+        return false;
+    }
+
 }
