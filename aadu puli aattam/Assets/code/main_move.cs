@@ -9,9 +9,9 @@ public class main_move : MonoBehaviour
     [SerializeField]
     private GameObject[] t, g,pos;
     int goatcount = 0,turn = 1;
-
+    [SerializeField]
     int[] completelog = {1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-
+    [SerializeField]
     int[] tigerpos = { 0, 3, 4 }, goatpos = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
     //goat die
     bool jump = false;
@@ -74,13 +74,17 @@ public class main_move : MonoBehaviour
     GameObject t_win, g_win;
     [SerializeField]
     TextMeshProUGUI text;
-
+    //goat knock out
+    [SerializeField]
+    private GameObject[] goatenable;
     //AUDIO
     [SerializeField]
     AudioSource coin, kill;
     void Update()
     {
-        text.SetText(goat_die.ToString());
+
+
+
         //goat turn
         if (turn % 2 == 1)
         {
@@ -121,6 +125,8 @@ public class main_move : MonoBehaviour
                             goatpos[goatcount] = log;
                             check_pulli_can_move();
                             goatcount += 1;
+                            int temp = 15- goatcount;
+                            text.SetText(temp.ToString());
                             disable_colider_all();
                             disable_highlight();
                             turn += 1;
@@ -232,6 +238,31 @@ public class main_move : MonoBehaviour
                                             g[i].SetActive(false);
                                             completelog[goatpos[i]] = 0;
                                             goatpos[i] = -1;
+                                            
+                                            if (goat_die == 1)
+                                            {
+                                                goatenable[4].SetActive(true);
+                                            }
+                                            if (goat_die == 2)
+                                            {
+                                                goatenable[3].SetActive(true);
+
+                                            }
+                                            if (goat_die == 3)
+                                            {
+                                                goatenable[2].SetActive(true);
+
+                                            }
+                                            if (goat_die == 4)
+                                            {
+                                                goatenable[1].SetActive(true);
+
+                                            }
+                                            if (goat_die == 5)
+                                            {
+                                                goatenable[0].SetActive(true);
+
+                                            }
                                             goat_die -= 1;
                                             jump = false;
                                             delete = -5;
@@ -703,7 +734,7 @@ public class main_move : MonoBehaviour
                         {
                             pos[Seventeen_next[i]].GetComponentInChildren<Renderer>().enabled = true;
                             Enable_colider(Seventeen_next[i]);
-                            where_goat_goes = Sixteen_next[i];
+                            where_goat_goes = Seventeen_next[i];
                             jump = true;
                             delete = Seventeen[i];
 
@@ -885,6 +916,8 @@ public class main_move : MonoBehaviour
                             done += 1;
                         }
                     }
+
+
                     if (done == one.Length)
                     {
                         Debug.Log(done);
