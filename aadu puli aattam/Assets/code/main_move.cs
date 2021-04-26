@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class main_move : MonoBehaviour
 {
@@ -80,11 +81,12 @@ public class main_move : MonoBehaviour
     //AUDIO
     [SerializeField]
     AudioSource coin, kill;
+    void mainmenu()
+    {
+        SceneManager.LoadScene(0);
+    }
     void Update()
     {
-
-
-
         //goat turn
         if (turn % 2 == 1)
         {
@@ -100,7 +102,10 @@ public class main_move : MonoBehaviour
             {
                 //goat win
                 Debug.Log("goat all died");
+
                 t_win.SetActive(true);
+                Invoke("mainmenu", 5f);
+
 
             }
             if (Input.GetMouseButtonDown(0) && goatcount < 15)
@@ -868,6 +873,7 @@ public class main_move : MonoBehaviour
             //tiger locked
             Debug.Log("locked");
             g_win.SetActive(true);
+            Invoke("mainmenu", 5f);
 
         }
 
